@@ -335,6 +335,7 @@ void RunAlways(void* p) {
                 uint32_t nIndex = pTest->GetPushCtxNoNull();
                 pTest->Receive(nIndex);
                 p->YieldCorutine();
+                pTest = p->GetParamPoint<CCoroutineUnit>(0);
             }
         });
         pCorutine->Resume(S, pTest);
@@ -346,7 +347,7 @@ void RunAlways(void* p) {
         pTest->getVTWaitCo(vtWaitCo);
         if (vtWaitCo.size() != 0) {
             for (CCorutine* p : vtWaitCo) {
-                p->Resume(S);
+                p->Resume(S, pTest);
                 if (p->GetCoroutineState() != CoroutineState_Death) {
                     //push到另外线程
                     pTest->m_pNext->AddCorutine(p);
