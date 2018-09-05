@@ -310,7 +310,11 @@ void CrossThreadTest(void* p) {
             }
         }
         else {
-            _mm_pause();
+#ifdef _MSC_VER
+            SwitchToThread();
+#else
+            std::this_thread::yield();
+#endif
         }
     }
     delete S;
@@ -352,7 +356,11 @@ void RunAlways(void* p) {
         else {
             if (pTest->m_bFinish)
                 break;
-            _mm_pause();
+#ifdef _MSC_VER
+            SwitchToThread();
+#else
+            std::this_thread::yield();
+#endif
         }
     }
     delete S;

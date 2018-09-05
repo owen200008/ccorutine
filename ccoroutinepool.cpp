@@ -1,4 +1,4 @@
-﻿#include "ccoroutinepool.h"
+#include "ccoroutinepool.h"
 #include <time.h>
 
 #ifdef _MSC_VER
@@ -129,7 +129,8 @@ void CCorutinePool::ReleaseCorutine(CCorutine* pPTR) {
     if (m_nCorutineSize == m_cap) {
         //默认1/4放入全局,最大512
         uint16_t nSize = m_nCorutineSize > 2048 ? 512 : m_nCorutineSize / 4;
-        m_poolMgr.ReleaseCorutineToGlobal(m_queue + m_nCorutineSize  - nSize, nSize);
+        m_nCorutineSize -= nSize;
+        m_poolMgr.ReleaseCorutineToGlobal(m_queue + m_nCorutineSize, nSize);
         //扩大到原来2倍
         if (m_cap < m_nLimitSize) {
             AddNewQueue();

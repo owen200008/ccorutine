@@ -77,42 +77,42 @@ int main(int argc, char* argv[]){
 
     for (int i = 0; i < 100; i++) {
         {
-            printf("/*************************************************************************/\n");
-            printf("Start SingleCorutineTest\n");
-            for (int i = 0; i < nTimes; i++) {
-                if (!BenchmarkSingle(nRepeatTimes, nMinThread, nMaxThread)) {
-                    printf("check fail!\n");
-                    break;
-                }
-            }
-            CCorutinePool::CheckCorutinePoolMgrCorrect();
-            printf("/*************************************************************************/\n");
-            printf("Start MultiCorutineTest\n");
-            for (int i = 0; i < nTimes; i++) {
-                if (!BenchmarkMulti(nRepeatTimes, nMinThread, nMaxThread)) {
-                    printf("check fail!\n");
-                    break;
-                }
-            }
-            CCorutinePool::CheckCorutinePoolMgrCorrect();
-            printf("/*************************************************************************/\n");
-            printf("Start DiGuiCorutineTest\n");
-            for (int i = 0; i < nTimes; i++) {
-                if (!BenchmarkDiGui(nRepeatTimes, nMinThread, nMaxThread)) {
-                    printf("check fail!\n");
-                    break;
-                }
-            }
-            CCorutinePool::CheckCorutinePoolMgrCorrect();
-            printf("/*************************************************************************/\n");
-            printf("Start CrossThreadTest\n");
-            for (int i = 0; i < nTimes; i++) {
-                if (!BenchmarkCrossThread(nRepeatTimes, nMinThread, nMaxThread)) {
-                    printf("check fail!\n");
-                    break;
-                }
-            }
-            CCorutinePool::CheckCorutinePoolMgrCorrect();
+//            printf("/*************************************************************************/\n");
+//            printf("Start SingleCorutineTest\n");
+//            for (int i = 0; i < nTimes; i++) {
+//                if (!BenchmarkSingle(nRepeatTimes, nMinThread, nMaxThread)) {
+//                    printf("check fail!\n");
+//                    break;
+//                }
+//            }
+//            CCorutinePool::CheckCorutinePoolMgrCorrect();
+//            printf("/*************************************************************************/\n");
+//            printf("Start MultiCorutineTest\n");
+//            for (int i = 0; i < nTimes; i++) {
+//                if (!BenchmarkMulti(nRepeatTimes, nMinThread, nMaxThread)) {
+//                    printf("check fail!\n");
+//                    break;
+//                }
+//            }
+//            CCorutinePool::CheckCorutinePoolMgrCorrect();
+//            printf("/*************************************************************************/\n");
+//            printf("Start DiGuiCorutineTest\n");
+//            for (int i = 0; i < nTimes; i++) {
+//                if (!BenchmarkDiGui(nRepeatTimes, nMinThread, nMaxThread)) {
+//                    printf("check fail!\n");
+//                    break;
+//                }
+//            }
+//            CCorutinePool::CheckCorutinePoolMgrCorrect();
+//            printf("/*************************************************************************/\n");
+//            printf("Start CrossThreadTest\n");
+//            for (int i = 0; i < nTimes; i++) {
+//                if (!BenchmarkCrossThread(nRepeatTimes, nMinThread, nMaxThread)) {
+//                    printf("check fail!\n");
+//                    break;
+//                }
+//            }
+//            CCorutinePool::CheckCorutinePoolMgrCorrect();
             printf("/*************************************************************************/\n");
             printf("Start Heavy\n");
             if (!BenchmarkQueueTime(nHeavyTestTime, nMinThread)) {
