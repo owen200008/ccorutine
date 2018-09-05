@@ -9,6 +9,9 @@ typedef unsigned long DWORD;
 #else
 typedef unsigned long DWORD;
 #endif
+#include <sys/times.h>
+#include <sys/time.h>
+#include <unistd.h>
 #define CCSleep(x) usleep(x)
 #elif defined(_MSC_VER)
 #include <Windows.h>

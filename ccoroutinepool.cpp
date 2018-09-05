@@ -30,7 +30,7 @@ CCorutineThreadData::CCorutineThreadData() {
 #ifdef _MSC_VER
     TlsSetValue(m_tlsKey, this);
 #else
-    pthread_setspecific(m_tlsKey, this)
+    pthread_setspecific(m_tlsKey, this);
 #endif
 }
 CCorutineThreadData* CCorutineThreadData::GetTLSValue(){

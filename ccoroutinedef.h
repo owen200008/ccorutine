@@ -4,8 +4,12 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <assert.h>
+#include <cstring>
 
 #ifdef __GNUC__
+#include <pthread.h>
+#include <emmintrin.h>
+#include <thread>
 #define CCTHREADID_DWORD    pthread_t
 #define CCORUTINETLS_Key	pthread_key_t
 #define CCLockfreequeueLikely(x) __builtin_expect((x), true)
