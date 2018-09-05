@@ -96,6 +96,13 @@ public:
         m_vtWaitCo.push_back(p);
         m_lock.store(false, std::memory_order_release);
     }
+    void AddCorutine(std::vector<CCorutine*>& vt) {
+        while (m_lock.exchange(true, std::memory_order_acquire)) {
+            _mm_pause();
+        }
+        m_vtWaitCo.insert(m_vtWaitCo.end(), vt.begin(), vt.end());
+        m_lock.store(false, std::memory_order_release);
+    }
 
     void getVTWaitCo(std::vector<CCorutine*>& vtWaitCo) {
         while (m_lock.exchange(true, std::memory_order_acquire)) {
@@ -292,18 +299,27 @@ void CrossThreadTest(void* p) {
         pTest->m_pNext->AddCorutine(pCorutine);
     }
     uint32_t nResumeTimes = 0;
+    std::vector<CCorutine*> vtWaitCo;
+    std::vector<CCorutine*> vtAddWaitCo;
+    vtWaitCo.reserve(nCreate);
+    vtAddWaitCo.reserve(nCreate);
     while (true) {
-        std::vector<CCorutine*> vtWaitCo;
+        vtWaitCo.resize(0);
+        vtAddWaitCo.resize(0);
         pTest->getVTWaitCo(vtWaitCo);
         uint32_t nSize = vtWaitCo.size();
         if (nSize != 0) {
             for (CCorutine* p : vtWaitCo) {
                 p->Resume(S);
                 if (p->GetCoroutineState() != CoroutineState_Death) {
-                    //push到另外线程
-                    pTest->m_pNext->AddCorutine(p);
+                    vtAddWaitCo.push_back(p);
                 }
             }
+            if (vtAddWaitCo.size() > 0) {
+                //push到另外线程
+                pTest->m_pNext->AddCorutine(vtAddWaitCo);
+            }
+
             nResumeTimes += nSize;
             if (nResumeTimes == nCount) {
                 break;
@@ -342,16 +358,24 @@ void RunAlways(void* p) {
         //push到另外线程
         pTest->m_pNext->AddCorutine(pCorutine);
     }
+    std::vector<CCorutine*> vtWaitCo;
+    std::vector<CCorutine*> vtAddWaitCo;
+    vtWaitCo.reserve(nCreate);
+    vtAddWaitCo.reserve(nCreate);
     while (true) {
-        std::vector<CCorutine*> vtWaitCo;
+        vtWaitCo.resize(0);
+        vtAddWaitCo.resize(0);
         pTest->getVTWaitCo(vtWaitCo);
         if (vtWaitCo.size() != 0) {
             for (CCorutine* p : vtWaitCo) {
                 p->Resume(S, pTest);
                 if (p->GetCoroutineState() != CoroutineState_Death) {
-                    //push到另外线程
-                    pTest->m_pNext->AddCorutine(p);
+                    vtAddWaitCo.push_back(p);
                 }
+            }
+            if (vtAddWaitCo.size() > 0) {
+                //push到另外线程
+                pTest->m_pNext->AddCorutine(vtAddWaitCo);
             }
         }
         else {
